@@ -8,10 +8,13 @@ import (
 	"path/filepath"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 )
+
+var monboDBResource = schema.GroupVersionResource{Group: "mongodbcommunity.mongodb.com", Version: "v1", Resource: "mongodbcommunity"}
 
 func main() {
 	var kubeconfig *string
@@ -27,10 +30,10 @@ func main() {
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
+	//dynamic, err := dynamic.NewForConfig(config)
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	//_, err = clientset.CoreV1().Pods("booksapp").Get(context.TODO(), "authors-b7bbfb747-cnxkz", metav1.GetOptions{})
 	pod, err := clientset.AppsV1().Deployments("booksapp").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -44,6 +47,7 @@ func main() {
 	st := []string{"Hi", "Hello"}
 
 	stuff(st...)
+
 }
 
 // accepts O or more parameter and reference them as slice
