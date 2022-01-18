@@ -1,0 +1,5 @@
+FROM ubuntu
+
+COPY ./get_all_pods ./get_all_pods
+
+ENTRYPOINT ["./get_all_pods"]
